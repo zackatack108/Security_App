@@ -1,0 +1,27 @@
+﻿@page "/"
+@using SecurityWeb
+
+<PageTitle>Home</PageTitle>
+
+<input type="text" @bind="Username"/>
+<input type="password"@bind="Password" />
+<button type="submit" @onclick="Login">Login</button>
+
+
+@code{
+    string Username = null;
+    string Password = null;
+
+    APIService service;
+
+    public Home(APIService service)
+    {
+        this.service = service;
+    }    
+
+    public void Login()
+    {
+        service.LoginUser(Username, Password);
+    }
+
+}

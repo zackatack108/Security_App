@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Security_API.Controllers;
 using Security_API.Data;
 
@@ -12,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<SecurityContext>(options => options.UseNpgsql(builder.Configuration["dbConnection"]));
-builder.Services.AddSingleton<UserController>();
+builder.Services.AddSingleton<UserController>(new UserController( builder.Configuration["dbConnection"]));
 
 var app = builder.Build();
 

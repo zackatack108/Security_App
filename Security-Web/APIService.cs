@@ -10,8 +10,8 @@ public class APIService
         this.client = client;
     }
 
-    public void LoginUser(string username, string password)
+    public async Task LoginUser(string username, string password)
     {
-
+        await client.PostAsync($"api/login?username={username},password={password}", null);
     }
 }

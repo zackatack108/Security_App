@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using SecurityWeb
+@inject APIService service
 
 <PageTitle>Home</PageTitle>
 
@@ -10,18 +11,11 @@
 
 @code{
     string Username = null;
-    string Password = null;
+    string Password = null;   
 
-    APIService service;
-
-    public Home(APIService service)
+    public async Task Login()
     {
-        this.service = service;
-    }    
-
-    public void Login()
-    {
-        service.LoginUser(Username, Password);
+        await service.LoginUser(Username, Password);
     }
 
 }

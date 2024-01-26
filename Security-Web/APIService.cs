@@ -12,6 +12,6 @@ public class APIService
 
     public async Task LoginUser(string username, string password)
     {
-        await client.PostAsync($"api/login?username={username} & password={password}", null);
+        await client.PostAsync($"api/login/{username}/{password}", null);
     }
 }

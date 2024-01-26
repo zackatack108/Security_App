@@ -16,8 +16,8 @@ public class UserController : Controller
         this.connectionString = connectionString;
     }
 
-    [HttpPost("Login")]
-    public Task Login([FromQuery(Name = "username")] string username, [FromQuery(Name = "password")] string password)
+    [HttpPost("Login/{username}/{password}")]
+    public Task Login(string username, string password)
     {
         userLogin(username, password);
         return Task.CompletedTask;

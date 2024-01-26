@@ -1,6 +1,6 @@
-set search_path to public;
+/*set search_path to public;
 create schema if not exists securityapp;
-set search_path to securityapp;
+set search_path to securityapp;*/
 
 create table if not exists client (
 	id serial primary key, 

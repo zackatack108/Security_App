@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Npgsql;
-using System.Data;
-using System.Data.SqlClient;
-using System.Security;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Security_API.Controllers;
 
@@ -26,8 +21,10 @@ public class UserController : Controller
         return Task.CompletedTask;
     }
 
-    private void userLogin(string username, string password)
+    private (string, string) userLogin(string username, string password)
     {
+        var foundUser = "";
+        var foundPassword = "";
         Console.WriteLine($"DB Connection: {connectionString}");
         using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
         {
@@ -40,11 +37,13 @@ public class UserController : Controller
 
                 while (reader.Read())
                 {
-                    Console.WriteLine(reader["username"].ToString());
-                    Console.WriteLine(reader["password"].ToString());
+                    foundUser = reader["username"].ToString();
+                    foundUser = reader["password"].ToString();
                 }
             }
         }
+
+        return (foundUser, foundPassword);
     }
 }
-  
+

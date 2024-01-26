@@ -4,18 +4,27 @@
 
 <PageTitle>Home</PageTitle>
 
+<label>Username</label>
 <input type="text" @bind="Username"/>
+<label>Password</label>
 <input type="password"@bind="Password" />
 <button type="submit" @onclick="Login">Login</button>
+<p>Found User: @foundUser</p>
+<p>Found Password: @foundPassword</p>
+
 
 
 @code{
     string Username = null;
-    string Password = null;   
+    string Password = null;
+    string foundUser = "";
+    string foundPassword = "";
 
     public async Task Login()
     {
-        await service.LoginUser(Username, Password);
+        var response = await service.LoginUser(Username, Password);
+        foundUser = response.Item1;
+        foundPassword = response.Item2;
     }
 
 }

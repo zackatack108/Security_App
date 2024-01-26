@@ -4,9 +4,6 @@ networks:
   monitoring:
     driver: bridge
 
-volumes:
-  security_database: {}
-
 services:
   security-api:
     container_name: "security-api"
@@ -40,7 +37,6 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
     volumes:
-      - security_database:/var/lib/postgresql/data
       - ./Database/securityappcreationscript.sql:/docker-entrypoint-initdb.d/securityappcreationscript.sql
     ports:
       - "5432:5432"

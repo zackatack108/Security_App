@@ -13,16 +13,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<SecurityContext>(options => options.UseNpgsql(builder.Configuration["dbConnection"]));
-builder.Services.AddSingleton<UserController>(new UserController( builder.Configuration["dbConnection"]));
+//builder.Services.AddSingleton<UserController>(new UserController( builder.Configuration["dbConnection"]));
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
 }
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors(policy =>
     policy

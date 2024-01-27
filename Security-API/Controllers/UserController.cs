@@ -17,13 +17,12 @@ public class UserController : Controller
     public async Task<IActionResult> Login(string username, string password)
     {
         var response = await userLogin(username, password);
-        return Ok(response);
+        return response;
     }
 
     private async Task<IActionResult> userLogin(string username, string password)
     {
-        var foundUser = "";
-        var foundPassword = "";
+        List<User> users = new();
         Console.WriteLine($"DB Connection: {connectionString}");
 
         using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
@@ -37,13 +36,19 @@ public class UserController : Controller
 
                 while (await reader.ReadAsync())
                 {
-                    foundUser = reader["username"].ToString();
-                    foundPassword = reader["password"].ToString();
+                    User user = new()
+                    {
+                        Username = reader["username"].ToString(),
+                        Password = reader["password"].ToString()
+                    };
+
+                    users.Add(user);
+                    
                 }
             }
         }
 
-        return Ok((foundUser, foundPassword));
+        return Ok(users);
     }
 
 }

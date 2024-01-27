@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using Security_Web;
+using System.Net.Http.Json;
 
 namespace SecurityWeb;
 
@@ -12,16 +13,17 @@ public class APIService
         this.client = client;
     }
 
-    public async Task<(string, string)> LoginUser(string username, string password)
+    public async Task<IEnumerable<User>> LoginUser(string username, string password)
     {
-        var response = await client.PostAsJsonAsync<(string, string)>($"api/login/{username}/{password}", null);
-        if (response != null)
+        var response = await client.PostAsJsonAsync<string>($"api/login/{username}/{password}", null);
+        if (response.IsSuccessStatusCode)
         {
-            return response;
+            var data = await response.Content.ReadFromJsonAsync<List<User>>();
+            return data;
         }
         else
         {
-            return ("nothing", "nothing");
+            return new List<User>();
         }
     }
 }

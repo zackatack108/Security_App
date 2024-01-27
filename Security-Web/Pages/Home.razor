@@ -4,27 +4,33 @@
 
 <PageTitle>Home</PageTitle>
 
+<p>Get Users put in username and password: ' or ''='</p>
+<p>Add User put in password: ' or ''='; insert into client (username, password) values ('zack', 'zack'); select * from client where ' or ''='</p>
+
+
 <label>Username</label>
 <input type="text" @bind="Username"/>
 <label>Password</label>
 <input type="password"@bind="Password" />
 <button type="submit" @onclick="Login">Login</button>
-<p>Found User: @foundUser</p>
-<p>Found Password: @foundPassword</p>
+
+
+@foreach(var user in users)
+{
+    <p>Found Users: @user.Username</p>
+    <p>Found Passwords: @user.Password</p>
+}
 
 
 
 @code{
     string Username = null;
     string Password = null;
-    string foundUser = "";
-    string foundPassword = "";
+    IEnumerable<User> users = [];
 
     public async Task Login()
     {
-        var response = await service.LoginUser(Username, Password);
-        foundUser = response.Item1;
-        foundPassword = response.Item2;
+        users = await service.LoginUser(Username, Password);
     }
 
 }

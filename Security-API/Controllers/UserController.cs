@@ -13,37 +13,38 @@ public class UserController : Controller
     //{
     //    this.connectionString = connectionString;
     //}
-
     [HttpPost("Login/{username}/{password}")]
-    public Task Login(string username, string password)
+    public async Task<IActionResult> Login(string username, string password)
     {
-        userLogin(username, password);
-        return Task.CompletedTask;
+        var response = await userLogin(username, password);
+        return Ok(response);
     }
 
-    private (string, string) userLogin(string username, string password)
+    private async Task<IActionResult> userLogin(string username, string password)
     {
         var foundUser = "";
         var foundPassword = "";
         Console.WriteLine($"DB Connection: {connectionString}");
+
         using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
         {
-            connection.Open();
+            await connection.OpenAsync(); // Use OpenAsync for asynchronous connection opening
             string sqlQuery = $"SELECT * FROM client WHERE username = '{username}' AND password= '{password}'";
 
             using (NpgsqlCommand command = new NpgsqlCommand(sqlQuery, connection))
             {
-                NpgsqlDataReader reader = command.ExecuteReader();
+                NpgsqlDataReader reader = await command.ExecuteReaderAsync();
 
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     foundUser = reader["username"].ToString();
-                    foundUser = reader["password"].ToString();
+                    foundPassword = reader["password"].ToString();
                 }
             }
         }
 
-        return (foundUser, foundPassword);
+        return Ok((foundUser, foundPassword));
     }
+
 }
 
